@@ -1,20 +1,59 @@
+
+let balance = 100000;
+let btcOwned = 0;
 async function getPrices() {
     try {
-        const response = await fetch(
-            "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=inr"
+        const btcRes = await fetch(
+            "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT"
         );
 
-        const data = await response.json();
+        const ethRes = await fetch(
+            "https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT"
+        );
 
-        document.getElementById("btc-price").textContent =
-            "₹ " + data.bitcoin.inr.toLocaleString();
+        const btcData = await btcRes.json();
+        const ethData = await ethRes.json();
 
-        document.getElementById("eth-price").textContent =
-            "₹ " + data.ethereum.inr.toLocaleString();
+        document.getElementById("btc-price").innerText =
+            "$" + Number(btcData.price).toLocaleString();
+
+        document.getElementById("eth-price").innerText =
+            "$" + Number(ethData.price).toLocaleString();
 
     } catch (error) {
-        console.error("Error fetching prices:", error);
+        console.error(error);
     }
 }
 
 getPrices();
+
+document.getElementById("buy-btn")
+document.addEventListener("click", buyBTC);
+function buyBTC() {
+
+    if(balance >= 10000){
+
+        balance -= 10000;
+
+        btcOwned += 0.0001;
+
+        updateUI();
+
+    }
+    else{
+        alert("Not enough balance");
+    }
+}
+function updateUI(){
+
+    document
+    .getElementById("balance")
+    .innerText =
+    balance.toFixed(2);
+
+    document
+    .getElementById("btc-owned")
+    .innerText =
+    btcOwned.toFixed(4);
+}
+updateUI();
