@@ -44,16 +44,12 @@ function buyBTC() {
         alert("Not enough balance");
     }
 }
-function updateUI(){
+function updateUI() {
 
-    document
-    .getElementById("balance")
-    .innerText =
-    balance.toFixed(2);
+    document.getElementById("balance").innerText =
+        "₹" + balance.toFixed(2);
 
-    document
-    .getElementById("btc-owned")
-    .innerText =
-    btcOwned.toFixed(4);
+    document.getElementById("btc-owned").innerText =
+        btcOwned.toFixed(4);
 }
 updateUI();

@@ -28,3 +28,15 @@ nav{
     border-radius:12px;
     width:250px;
 }
+button{
+    padding:10px 20px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    opacity:0.9;
+}
