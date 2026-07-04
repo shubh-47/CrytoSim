@@ -1,6 +1,7 @@
 
 let balance = 100000;
 let btcOwned = 0;
+let btcPrice = 0;
 async function getPrices() {
     try {
         const btcRes = await fetch(
@@ -13,6 +14,7 @@ async function getPrices() {
 
         const btcData = await btcRes.json();
         const ethData = await ethRes.json();
+        btcPrice = Number(btcData.price);
 
         document.getElementById("btc-price").innerText =
             "$" + Number(btcData.price).toLocaleString();
@@ -31,25 +33,37 @@ document.getElementById("buy-btn")
 document.addEventListener("click", buyBTC);
 function buyBTC() {
 
-    if(balance >= 10000){
+    const investment = 10000;
 
-        balance -= 10000;
+    if(balance >= investment){
 
-        btcOwned += 0.0001;
+        const btcPurchased =
+            investment / btcPrice;
+
+        btcOwned += btcPurchased;
+
+        balance -= investment;
 
         updateUI();
 
-    }
-    else{
-        alert("Not enough balance");
+    } else {
+
+        alert("Insufficient Balance");
+
     }
 }
 function updateUI() {
 
     document.getElementById("balance").innerText =
-        "₹" + balance.toFixed(2);
+        balance.toFixed(2);
 
     document.getElementById("btc-owned").innerText =
-        btcOwned.toFixed(4);
+        btcOwned.toFixed(6);
+
+    const portfolioValue = btcOwned * btcPrice;
+
+
+    document.getElementById("portfolio-value").innerText =
+        "$" + portfolioValue.toFixed(2);
 }
 updateUI();
