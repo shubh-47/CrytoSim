@@ -1,6 +1,9 @@
 
-let balance = 100000;
-let btcOwned = 0;
+let balance =
+    Number(localStorage.getItem("balance")) || 100000;
+
+let btcOwned =
+    Number(localStorage.getItem("btcOwned")) || 0;
 let btcPrice = 0;
 async function getPrices() {
     try {
@@ -40,7 +43,7 @@ function buyBTC() {
             investment / btcPrice;
 
         btcOwned += btcPurchased;
-
+        btcOwned = Number(btcOwned.toFixed(8));  
         balance -= investment;
 
         updateUI();
@@ -64,6 +67,12 @@ function sellBTC() {
 
         btcOwned -= btcToSell;
 
+
+btcOwned = Number(btcOwned.toFixed(8));
+
+if (Math.abs(btcOwned) < 0.000001) {
+    btcOwned = 0;
+}
         balance += investment;
 
         updateUI();
@@ -78,8 +87,13 @@ function updateUI() {
 document.getElementById("balance").innerText =
     "₹" + balance.toLocaleString();
 
-    document.getElementById("btc-owned").innerText =
-        btcOwned.toFixed(6);
+  document.getElementById("btc-owned").innerText =
+    btcOwned.toLocaleString(undefined, {
+        maximumFractionDigits: 6
+    });
+       
+        localStorage.setItem("balance", balance);
+        localStorage.setItem("btcOwned", btcOwned);
 
     const portfolioValue = btcOwned * btcPrice;
 
@@ -88,5 +102,15 @@ document.getElementById("portfolio-value").innerText =
          minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
+}
+function resetPortfolio() {
+    localStorage.clear();
+
+    balance = 100000;
+    btcOwned = 0;
+    totalInvested = 0;
+    trades = [];
+
+    updateUI();
 }
 updateUI();
