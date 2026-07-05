@@ -15,7 +15,7 @@ async function getPrices() {
         const btcData = await btcRes.json();
         const ethData = await ethRes.json();
         btcPrice = Number(btcData.price);
-
+updateUI();
         document.getElementById("btc-price").innerText =
             "$" + Number(btcData.price).toLocaleString();
 
@@ -28,9 +28,8 @@ async function getPrices() {
 }
 
 getPrices();
+document.getElementById("buy-btn").addEventListener("click", buyBTC);
 
-document.getElementById("buy-btn")
-document.addEventListener("click", buyBTC);
 function buyBTC() {
 
     const investment = 10000;
@@ -52,18 +51,42 @@ function buyBTC() {
 
     }
 }
-function updateUI() {
 
-    document.getElementById("balance").innerText =
-        balance.toFixed(2);
+document.getElementById("sell-btn").addEventListener("click", sellBTC);
+
+function sellBTC() {
+
+    const investment = 10000;
+
+    const btcToSell = investment / btcPrice;
+
+    if (btcOwned >= btcToSell) {
+
+        btcOwned -= btcToSell;
+
+        balance += investment;
+
+        updateUI();
+
+    } else {
+
+        alert("Not enough BTC");
+
+    }
+}
+function updateUI() {
+document.getElementById("balance").innerText =
+    "₹" + balance.toLocaleString();
 
     document.getElementById("btc-owned").innerText =
         btcOwned.toFixed(6);
 
     const portfolioValue = btcOwned * btcPrice;
 
-
-    document.getElementById("portfolio-value").innerText =
-        "$" + portfolioValue.toFixed(2);
+document.getElementById("portfolio-value").innerText =
+    "$" + portfolioValue.toLocaleString(undefined, {
+         minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
 }
 updateUI();
