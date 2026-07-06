@@ -40,3 +40,28 @@ button{
 button:hover{
     opacity:0.9;
 }
+.card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.trade-history-card {
+    max-height: 300px;
+    overflow-y: auto;
+}
+.trade-container {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: left;
+}

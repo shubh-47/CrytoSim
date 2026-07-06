@@ -5,6 +5,10 @@ let balance =
 let btcOwned =
     Number(localStorage.getItem("btcOwned")) || 0;
 let btcPrice = 0;
+
+let trades =
+    JSON.parse(localStorage.getItem("trades")) || [];
+
 async function getPrices() {
     try {
         const btcRes = await fetch(
@@ -46,6 +50,12 @@ function buyBTC() {
         btcOwned = Number(btcOwned.toFixed(8));  
         balance -= investment;
 
+
+        trades.push({
+    type: "BUY",
+    amount: 10000
+
+     });
         updateUI();
 
     } else {
@@ -74,8 +84,13 @@ if (Math.abs(btcOwned) < 0.000001) {
     btcOwned = 0;
 }
         balance += investment;
-
-        updateUI();
+        
+    trades.push({
+    type: "SELL",
+    amount: 10000
+     });
+        
+     updateUI();
 
     } else {
 
@@ -102,7 +117,35 @@ document.getElementById("portfolio-value").innerText =
          minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
+        renderTrades();
 }
+
+function renderTrades() {
+
+    const history =
+        document.getElementById("trade-history");
+
+    history.innerHTML = "";
+
+    [...trades]
+.reverse()
+.slice(0, 20)
+.forEach(trade => {
+
+        history.innerHTML += `
+            <tr>
+                <td>${trade.type}</td>
+                <td>₹${trade.amount}</td>
+            </tr>
+        `;
+    });
+
+    localStorage.setItem(
+        "trades",
+        JSON.stringify(trades)
+    );
+}
+
 function resetPortfolio() {
     localStorage.clear();
 

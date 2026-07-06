@@ -16,7 +16,7 @@ A cryptocurrency paper trading platform built with HTML, CSS, and JavaScript.
 * CSS
 * JavaScript
 * Chart.js
-* CoinGecko API
+* binance API
 
 ## Status
 
